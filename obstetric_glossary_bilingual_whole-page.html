@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>产科知识与术语 | Obstetrics Glossary</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --bg-main: #fdfbf6;
+            --bg-card: #ffffff;
+            --text-primary: #334155;
+            --text-secondary: #64748b;
+            --accent-primary: #0d9488;
+            --accent-primary-hover: #0f766e;
+            --accent-secondary: #f0fdfa;
+            --border-color: #e2e8f0;
+        }
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            font-family: 'Inter', 'Noto Sans SC', sans-serif;
+        }
+        .lang-en, .lang-zh { transition: opacity 0.3s ease-in-out; }
+        .hidden-lang { opacity: 0; position: absolute; pointer-events: none; }
+        .tab-button { transition: all 0.2s ease-in-out; }
+        .tab-button.active {
+            background-color: var(--accent-primary);
+            color: white;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .category-button { transition: all 0.2s ease-in-out; }
+        .category-button.active {
+            background-color: var(--accent-secondary);
+            color: var(--accent-primary);
+            font-weight: 600;
+            border-color: var(--accent-primary);
+        }
+        .glossary-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .glossary-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: var(--border-color);
+        }
+        .timeline-item {
+            position: relative;
+            width: 50%;
+        }
+        .timeline-item:nth-child(odd) {
+            padding-right: 2rem;
+            text-align: right;
+            left: 0;
+        }
+        .timeline-item:nth-child(even) {
+            padding-left: 2rem;
+            text-align: left;
+            left: 50%;
+        }
+        .timeline-dot {
+            content: '';
+            position: absolute;
+            top: 1rem;
+            width: 1rem;
+            height: 1rem;
+            background-color: var(--bg-main);
+            border: 3px solid var(--accent-primary);
+            border-radius: 50%;
+            z-index: 10;
+        }
+        .timeline-item:nth-child(odd) .timeline-dot {
+            right: -0.5rem;
+            transform: translateX(50%);
+        }
+        .timeline-item:nth-child(even) .timeline-dot {
+            left: -0.5rem;
+            transform: translateX(-50%);
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div id="app" class="container mx-auto p-4 md:p-8 max-w-7xl">
+        
+        <header class="text-center mb-8">
+            <h1 class="text-4xl md:text-5xl font-bold text-slate-800">
+                <span class="lang-zh">产科知识与术语</span>
+                <span class="lang-en hidden-lang">Obstetrics Glossary</span>
+            </h1>
+            <p class="mt-2 text-lg text-slate-600">
+                <span class="lang-zh">一个为双语学习者设计的互动指南</span>
+                <span class="lang-en hidden-lang">An Interactive Guide for Bilingual Learners</span>
+            </p>
+            <div class="mt-6 flex justify-center items-center space-x-2">
+                <span class="text-sm font-medium text-slate-500">English</span>
+                <button id="lang-switcher" class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-teal-600 focus:ring-offset-2 bg-teal-600">
+                    <span id="lang-switcher-knob" class="pointer-events-none inline-block h-5 w-5 translate-x-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"></span>
+                </button>
+                <span class="text-sm font-medium text-slate-500">中文</span>
+            </div>
+        </header>
+
+        <nav class="flex justify-center mb-8 bg-slate-100 rounded-full p-1 shadow-inner">
+            <button data-tab="glossary" class="tab-button active w-1/3 py-2 px-4 rounded-full text-center font-semibold">
+                <span class="lang-zh">词汇表</span>
+                <span class="lang-en hidden-lang">Glossary</span>
+            </button>
+            <button data-tab="knowledge" class="tab-button w-1/3 py-2 px-4 rounded-full text-center font-semibold">
+                <span class="lang-zh">基础知识</span>
+                <span class="lang-en hidden-lang">Basic Knowledge</span>
+            </button>
+            <button data-tab="qna" class="tab-button w-1/3 py-2 px-4 rounded-full text-center font-semibold">
+                <span class="lang-zh">常见问题</span>
+                <span class="lang-en hidden-lang">Q&A</span>
+            </button>
+        </nav>
+
+        <main>
+            <section id="glossary-section" class="tab-content">
+                <div class="mb-6 p-4 bg-white rounded-lg shadow">
+                    <p class="text-slate-600 text-center">
+                        <span class="lang-zh">在这里，您可以按类别浏览或直接搜索产科核心术语。我们提供定义和关键的背景信息，帮助您建立更深层次的理解。</span>
+                        <span class="lang-en hidden-lang">Here you can browse core obstetric terms by category or search directly. We provide definitions and key context to help you build a deeper understanding.</span>
+                    </p>
+                </div>
+                <div class="sticky top-0 z-20 bg-stone-50/80 backdrop-blur-sm py-4 mb-6">
+                    <input id="search-bar" type="text" class="w-full p-3 border-2 border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent" 
+                    placeholder="搜索术语 (Search terms)...">
+                    <div id="category-filters" class="flex flex-wrap justify-center gap-2 mt-4"></div>
+                </div>
+                <div id="glossary-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                </div>
+                <div id="no-results" class="text-center py-12 text-slate-500 hidden">
+                    <p class="text-xl font-semibold">
+                        <span class="lang-zh">未找到匹配的结果</span>
+                        <span class="lang-en hidden-lang">No matching results found</span>
+                    </p>
+                    <p class="mt-2">
+                        <span class="lang-zh">请尝试调整您的搜索词或筛选条件。</span>
+                        <span class="lang-en hidden-lang">Please try adjusting your search term or filter criteria.</span>
+                    </p>
+                </div>
+            </section>
+
+            <section id="knowledge-section" class="tab-content hidden">
+                <div class="mb-6 p-4 bg-white rounded-lg shadow">
+                    <p class="text-slate-600 text-center">
+                        <span class="lang-zh">本部分深入探讨了从产前保健到分娩，再到新生儿护理的核心主题，为您提供全面的知识框架。</span>
+                        <span class="lang-en hidden-lang">This section delves into core topics from prenatal care to labor and newborn care, providing you with a comprehensive knowledge framework.</span>
+                    </p>
+                </div>
+                <div id="knowledge-container" class="space-y-4"></div>
+            </section>
+
+            <section id="qna-section" class="tab-content hidden">
+                <div class="mb-6 p-4 bg-white rounded-lg shadow">
+                    <p class="text-slate-600 text-center">
+                        <span class="lang-zh">在这里，您可以找到一些关于产科和怀孕的常见问题及简明扼要的解答。</span>
+                        <span class="lang-en hidden-lang">Here you'll find concise answers to some of the most frequently asked questions about obstetrics and pregnancy.</span>
+                    </p>
+                </div>
+                <div id="qna-container" class="space-y-4"></div>
+            </section>
+        </main>
+
+        <footer class="mt-12 text-center text-slate-500 text-sm border-t pt-8">
+            <h4 class="text-lg font-semibold text-slate-700 mb-4">
+                <span class="lang-zh">引用来源</span>
+                <span class="lang-en hidden-lang">References</span>
+            </h4>
+            <ul class="list-disc list-inside space-y-1 text-left inline-block">
+                <li><span class="lang-zh">美国妇产科医师学会 (ACOG) - <a href="https://www.acog.org" class="text-teal-600 hover:underline" target="_blank">https://www.acog.org</a></span><span class="lang-en hidden-lang">American College of Obstetricians and Gynecologists (ACOG) - <a href="https://www.acog.org" class="text-teal-600 hover:underline" target="_blank">https://www.acog.org</a></span></li>
+                <li><span class="lang-zh">梅奥诊所 (Mayo Clinic) - <a href="https://www.mayoclinic.org/zh-hans/departments-centers/obstetrics-and-gynecology" class="text-teal-600 hover:underline" target="_blank">https://www.mayoclinic.org/zh-hans/departments-centers/obstetrics-and-gynecology</a></span><span class="lang-en hidden-lang">Mayo Clinic - <a href="https://www.mayoclinic.org/departments-centers/obstetrics-and-gynecology" class="text-teal-600 hover:underline" target="_blank">https://www.mayoclinic.org/departments-centers/obstetrics-and-gynecology</a></span></li>
+                <li><span class="lang-zh">美国国家医学图书馆 (NLM) - <a href="https://medlineplus.gov/pregnancy.html" class="text-teal-600 hover:underline" target="_blank">https://medlineplus.gov/pregnancy.html</a></span><span class="lang-en hidden-lang">National Library of Medicine (NLM) - <a href="https://medlineplus.gov/pregnancy.html" class="text-teal-600 hover:underline" target="_blank">https://medlineplus.gov/pregnancy.html</a></span></li>
+                <li><span class="lang-zh">世界卫生组织 (WHO) - <a href="https://www.who.int/zh/health-topics/pregnancy" class="text-teal-600 hover:underline" target="_blank">https://www.who.int/zh/health-topics/pregnancy</a></span><span class="lang-en hidden-lang">World Health Organization (WHO) - <a href="https://www.who.int/health-topics/pregnancy" class="text-teal-600 hover:underline" target="_blank">https://www.who.int/health-topics/pregnancy</a></span></li>
+            </ul>
+        </footer>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const appState = {
+                lang: 'zh',
+                activeTab: 'glossary',
+                filterCategory: 'all',
+                searchTerm: ''
+            };
+
+            const data = {
+                categories: {
+                    all: { zh: '全部类别', en: 'All Categories' },
+                    milestones: { zh: '妊娠里程碑与状况', en: 'Pregnancy Milestones & Conditions' },
+                    labor: { zh: '分娩与生产', en: 'Labor & Delivery' },
+                    procedures: { zh: '医疗程序与干预', en: 'Medical Procedures & Interventions' },
+                    postpartum: { zh: '产后与新生儿护理', en: 'Postpartum & Newborn Care' }
+                },
+                glossary: [
+                    { term_en: 'Amniocentesis', term_zh: '羊膜穿刺术', pinyin: 'yáng mó chuān cì shù', def_en: 'A prenatal test where a small amount of amniotic fluid is withdrawn to diagnose chromosomal problems and other birth defects.', def_zh: '一种产前诊断方法，通过抽取少量羊水来检查胎儿的染色体问题和先天性缺陷。', note_en: 'Usually performed after the 15th week of pregnancy.', note_zh: '通常在妊娠第15周后进行。', category: 'procedures' },
+                    { term_en: 'Apgar Score', term_zh: '阿普伽新生儿评分', pinyin: 'ā pǔ jiā xīn shēng ér píng fēn', def_en: 'A scoring system to evaluate a newborn\'s physical condition immediately after birth, with a maximum score of 10.', def_zh: '一种在婴儿出生后立即评估其身体状况的评分系统，满分为10分。', note_en: 'The score is assessed at 1 and 5 minutes after birth, evaluating heart rate, breathing, muscle tone, skin color, and response to stimuli.', note_zh: '该评分在出生后1分钟和5分钟进行，用于评估心率、呼吸、肌肉张力、皮肤颜色和对刺激的反应。', category: 'postpartum' },
+                    { term_en: 'bloody show', term_zh: '孕期见红', pinyin: 'yùn qī jiàn hóng', def_en: 'The passing of a small amount of blood-tinged mucus from the vagina during late pregnancy. It is a sign that labor may begin soon.', def_zh: '在怀孕晚期，从阴道排出的少量带血的黏液。这是分娩可能很快开始的迹象。', note_en: 'This is the loss of the mucus plug, which sealed the cervix during pregnancy.', note_zh: '这是宫颈黏液栓脱落，它在怀孕期间封住了宫颈。', category: 'labor' },
+                    { term_en: 'Braxton Hicks Contractions', term_zh: '假性宫缩', pinyin: 'jiǎ xìng gōng suō', def_en: 'Irregular, often painless contractions that occur throughout pregnancy, especially in the second and third trimesters. They do not cause cervical change.', def_zh: '在整个孕期，尤其是在孕中后期，出现的不规则且通常无痛的宫缩。它们不会导致宫颈变化。', note_en: 'Often called "practice contractions." They can be distinguished from true labor contractions by their irregularity.', note_zh: '常被称为“练习性宫缩”。其不规律性可以帮助与真正的分娩宫缩区分开来。', category: 'milestones' },
+                    { term_en: 'C-section', term_zh: '剖腹产', pinyin: 'pōu fù chǎn', def_en: 'A surgical operation to deliver a baby through an incision in the abdomen and uterus.', def_zh: '一种通过在腹部和子宫上切口来分娩婴儿的手术。', note_en: 'Common synonym is Cesarean section.', note_zh: '常见同义词为Cesarean section。', category: 'procedures' },
+                    { term_en: 'Chorioamnionitis', term_zh: '绒毛膜羊膜炎', pinyin: 'róng máo mó yáng mó yán', def_en: 'An infection of the fetal membranes and amniotic fluid caused by bacteria.', def_zh: '胎膜和羊水因细菌感染而引起的炎症。', note_en: 'Can be a risk factor for preterm labor and other complications.', note_zh: '可能是早产和其他并发症的风险因素。', category: 'milestones' },
+                    { term_en: 'Cord Prolapse', term_zh: '脐带脱垂', pinyin: 'qí dài tuō chuí', def_en: 'A serious obstetric complication where the umbilical cord slips through the cervix ahead of the baby, potentially compressing the cord and cutting off the baby\'s oxygen supply.', def_zh: '一种严重的产科并发症，脐带先于胎儿从宫颈滑出，可能压迫脐带，导致胎儿缺氧。', note_en: 'This is a medical emergency that requires immediate delivery, often by C-section.', note_zh: '这是一种需要立即分娩（通常是剖腹产）的医疗急症。', category: 'labor' },
+                    { term_en: 'Dystocia', term_zh: '难产', pinyin: 'nán chǎn', def_en: 'Slow or difficult labor or delivery. Can be caused by problems with the baby, the mother\'s pelvis, or the strength of contractions.', def_zh: '缓慢或困难的分娩或生产过程。可能由胎儿问题、产妇骨盆大小或宫缩强度不足引起。', note_en: 'Often leads to medical intervention like forceps, vacuum, or C-section.', note_zh: '常导致医疗干预，如产钳、真空吸引或剖腹产。', category: 'labor' },
+                    { term_en: 'Ectopic Pregnancy', term_zh: '异位妊娠 / 宫外孕', pinyin: 'yì wèi rèn shēn / gōng wài yùn', def_en: 'A pregnancy that develops somewhere other than the uterus, usually in the fallopian tube.', def_zh: '受精卵在子宫腔以外的地方着床，通常是在输卵管内发育的妊娠。', note_en: '`异位妊娠` is the formal medical term, while `宫外孕` is a common colloquial term.', note_zh: '`异位妊娠`是规范医学术语，`宫外孕`是常见的口语化称呼。', category: 'milestones' },
+                    { term_en: 'Epidural', term_zh: '硬膜外麻醉', pinyin: 'yìng mó wài má zuì', def_en: 'An injection of pain medicine into the space around the spinal fluid to relieve pain during labor.', def_zh: '一种将止痛药注射到脊椎周围的硬膜外腔，以缓解分娩疼痛的麻醉方法。', note_en: 'A common choice for pain relief during labor.', note_zh: '是分娩镇痛的常见选择。', category: 'procedures' },
+                    { term_en: 'Episiotomy', term_zh: '会阴切开术', pinyin: 'huì yīn qiē kāi shù', def_en: 'An incision through the vaginal wall and perineum to enlarge the birth opening during delivery.', def_zh: '在分娩时为了扩大产道开口，在阴道壁和会阴部进行的切口手术。', note_en: 'Traditionally thought to prevent severe tears, but modern research suggests its risks may outweigh benefits.', note_zh: '传统上认为可防止严重撕裂，但现代研究表明其风险可能超过益处。', category: 'procedures' },
+                    { term_en: 'Fetal Heart Rate Monitoring', term_zh: '胎心监测', pinyin: 'tāi xīn jiān cè', def_en: 'A method of checking the baby\'s heartbeat pattern during labor to ensure the baby is handling the stress of contractions well.', def_zh: '一种在分娩过程中检查胎儿心率模式的监测方法，以确保胎儿能很好地应对宫缩的压力。', note_en: 'Can be done externally (with a belt) or internally (with a scalp electrode).', note_zh: '可以通过外部（用皮带）或内部（用头皮电极）方式进行。', category: 'procedures' },
+                    { term_en: 'Fundus', term_zh: '子宫底', pinyin: 'zǐ gōng dǐ', def_en: 'The top, enlarged portion of the uterus.', def_zh: '子宫顶部，是子宫离开口最远的部分。', note_en: 'The Latin root of this term means "bottom," but anatomically it refers to the "top" of the uterus.', note_zh: '这个术语的拉丁语词根意为“底部”，但在解剖学上指子宫的“顶部”。', category: 'milestones' },
+                    { term_en: 'Gestational Diabetes', term_zh: '妊娠期糖尿病', pinyin: 'rèn shēn qī táng niào bìng', def_en: 'A type of high blood sugar that develops during pregnancy.', def_zh: '怀孕期间发生的一种高血糖症。', note_en: 'A glucose tolerance test is usually done around the 28th week of pregnancy to screen for it.', note_zh: '通常在孕期第28周左右进行葡萄糖耐量测试来筛查。', category: 'milestones' },
+                    { term_en: 'Gestational Hypertension', term_zh: '妊娠期高血压', pinyin: 'rèn shēn qī gāo xuè yā', def_en: 'High blood pressure that develops during pregnancy, without other symptoms of preeclampsia.', def_zh: '在怀孕期间出现的高血压，但没有子痫前期的其他症状。', note_en: 'Different from preeclampsia, as it doesn\'t include protein in the urine or other organ damage.', note_zh: '与子痫前期不同，它不伴有蛋白尿或其他器官损伤。', category: 'milestones' },
+                    { term_en: 'Induction of Labor', term_zh: '催生', pinyin: 'cuī shēng', def_en: 'The process of initiating labor artificially, using medical methods.', def_zh: '通过医疗手段人工引发分娩的过程。', note_en: '`催生` is a common colloquial term.', note_zh: '`催生`是一个口语化的常用词。', category: 'procedures' },
+                    { term_en: 'Lightening', term_zh: '胎头下降', pinyin: 'tāi tóu xià jiàng', def_en: 'The process of the baby dropping lower into the pelvis in preparation for birth. This usually happens in the last few weeks of pregnancy.', def_zh: '胎儿头部下降进入骨盆的过程，为分娩做准备。这通常发生在分娩前的几周。', note_en: 'The mother may feel more pressure in the pelvis and breathe more easily as the baby drops.', note_zh: '随着胎儿下降，母亲可能会感到骨盆压力增大，但呼吸会更轻松。', category: 'milestones' },
+                    { term_en: 'Lochia', term_zh: '恶露', pinyin: 'è lù', def_en: 'The vaginal discharge that occurs after childbirth. It is a mix of blood, mucus, and uterine tissue.', def_zh: '产后从阴道流出的分泌物，由血液、黏液和子宫组织混合而成。', note_en: 'Typically lasts for several weeks after delivery.', note_zh: '通常在分娩后持续数周。', category: 'postpartum' },
+                    { term_en: 'Macrosomia', term_zh: '巨大儿', pinyin: 'jù dà ér', def_en: 'A newborn baby that is significantly larger than average, typically weighing more than 4,000 grams (8 pounds, 13 ounces) at birth.', def_zh: '出生时体型明显大于平均水平的新生儿，通常出生体重超过4000克（8磅13盎司）。', note_en: 'Can be a complication of gestational diabetes.', note_zh: '可能是妊娠期糖尿病的一种并发症。', category: 'milestones' },
+                    { term_en: 'Meconium', term_zh: '胎粪', pinyin: 'tāi fèn', def_en: 'The first stool of a newborn baby. It is thick, sticky, and greenish-black. If passed into the amniotic fluid before or during labor, it may be a sign of fetal distress.', def_zh: '新生儿出生后排出的首次粪便。它呈浓稠、黏性的墨绿色。如果分娩前或分娩中羊水中出现胎粪，可能提示胎儿窘迫。', note_en: 'Meconium in the amniotic fluid can lead to a condition called Meconium Aspiration Syndrome (MAS), a respiratory issue for the newborn.', note_zh: '羊水中的胎粪可能导致胎粪吸入综合征（MAS），这是一种新生儿呼吸道问题。', category: 'labor' },
+                    { term_en: 'Non-Invasive Prenatal Testing (NIPT)', term_zh: '无创产前检测', pinyin: 'wú chuàng chǎn qián jiǎn cè', def_en: 'A blood test performed during pregnancy to screen for certain chromosomal abnormalities in the fetus, such as Down syndrome.', def_zh: '一种在孕期进行的血液检查，用于筛查胎儿是否存在某些染色体异常，如唐氏综合症。', note_en: 'It is a screening test, not a definitive diagnosis.', note_zh: '这是一种筛查测试，并非确诊手段。', category: 'procedures' },
+                    { term_en: 'Oligohydramnios', term_zh: '羊水过少', pinyin: 'yáng shuǐ guò shǎo', def_en: 'A condition where there is not enough amniotic fluid surrounding the baby in the uterus.', def_zh: '指子宫内包围胎儿的羊水过少。', note_en: 'Can be associated with fetal kidney problems or other complications.', note_zh: '可能与胎儿肾脏问题或其他并发症有关。', category: 'milestones' },
+                    { term_en: 'Perineal Tear', term_zh: '会阴撕裂', pinyin: 'huì yīn sī liè', def_en: 'A laceration of the perineum (the area between the vagina and anus) during childbirth.', def_zh: '分娩过程中，会阴部（阴道和肛门之间的区域）发生的撕裂。', note_en: 'Tears are graded from first to fourth degree based on severity.', note_zh: '撕裂根据严重程度分为一到四度。', category: 'labor' },
+                    { term_en: 'Placenta Previa', term_zh: '前置胎盘', pinyin: 'qián zhì tāi pán', def_en: 'A condition where the placenta partially or completely covers the cervix.', def_zh: '胎盘部分或完全覆盖子宫颈的状况。', note_en: 'Often requires a C-section for delivery to prevent severe bleeding.', note_zh: '通常需要剖腹产以防止严重出血。', category: 'milestones' },
+                    { term_en: 'Placental Abruption', term_zh: '胎盘早剥', pinyin: 'tāi pán zǎo bō', def_en: 'A serious pregnancy complication where the placenta detaches from the uterine wall before delivery. This can cause severe bleeding and risk to both mother and baby.', def_zh: '一种严重的妊娠并发症，指胎盘在分娩前部分或完全从子宫壁剥离。这可能导致严重出血，对母婴都有风险。', note_en: 'Often requires immediate medical attention and may necessitate an emergency C-section.', note_zh: '通常需要立即就医，可能需要紧急剖腹产。', category: 'milestones' },
+                    { term_en: 'Polyhydramnios', term_zh: '羊水过多', pinyin: 'yáng shuǐ guò duō', def_en: 'A condition where there is an excess amount of amniotic fluid surrounding the baby in the uterus.', def_zh: '指子宫内包围胎儿的羊水过多。', note_en: 'Can be associated with fetal gastrointestinal problems or gestational diabetes.', note_zh: '可能与胎儿胃肠道问题或妊娠期糖尿病有关。', category: 'milestones' },
+                    { term_en: 'Postpartum Depression', term_zh: '产后抑郁症', pinyin: 'chǎn hòu yì yù zhèng', def_en: 'A more severe, long-lasting form of depression experienced by a mother after childbirth.', def_zh: '产后母亲经历的一种更严重、持续时间更长的抑郁症。', note_en: 'Requires medical attention and differs from the temporary "baby blues."', note_zh: '需要医疗关注，与短暂的“产后忧郁”不同。', category: 'postpartum' },
+                    { term_en: 'Postpartum Hemorrhage', term_zh: '产后出血', pinyin: 'chǎn hòu chū xuè', def_en: 'Heavy bleeding after the birth of the baby.', def_zh: '婴儿出生后发生的严重出血。', note_en: 'Refers to bleeding anytime from 24 hours to 6 weeks after delivery and is a complication requiring close monitoring.', note_zh: '指分娩后24小时至6周内的任何时间出血，是产后需要密切监测的并发症。', category: 'postpartum' },
+                    { term_en: 'Preeclampsia', term_zh: '子痫前期', pinyin: 'zǐ xián qián qī', def_en: 'A pregnancy complication characterized by high blood pressure and signs of damage to another organ system, most often the liver and kidneys.', def_zh: '一种妊娠并发症，其特点是高血压，并伴有其他器官系统（如肝脏和肾脏）受损的迹象。', note_en: 'Requires close monitoring and may necessitate early delivery.', note_zh: '需要密切监测，可能需要提前分娩。', category: 'milestones' },
+                    { term_en: 'Preterm Labor', term_zh: '早产', pinyin: 'zǎo chǎn', def_en: 'Labor that begins before 37 weeks of pregnancy.', def_zh: '在怀孕37周之前开始的分娩。', note_en: 'Babies born prematurely often require specialized care.', note_zh: '早产婴儿通常需要特殊的护理。', category: 'labor' },
+                    { term_en: 'Preterm Premature Rupture of Membranes (PPROM)', term_zh: '胎膜早破', pinyin: 'tāi mó zǎo pò', def_en: 'The breaking of the water (amniotic sac) before 37 weeks of pregnancy and before labor starts.', def_zh: '指在怀孕37周之前，分娩开始之前，羊水囊（俗称“破水”）破裂。', note_en: 'Increases the risk of infection and preterm delivery.', note_zh: '增加了感染和早产的风险。', category: 'milestones' },
+                    { term_en: 'Puerperium', term_zh: '产褥期', pinyin: 'chǎn rù qī', def_en: 'The period following childbirth during which the mother\'s body returns to its pre-pregnant state. It typically lasts about six weeks.', def_zh: '从分娩结束到母亲生理功能恢复到孕前状态的时期。通常持续约六周。', note_en: 'This period is also known as the "fourth trimester."', note_zh: '这个时期也被称为“第四个孕期”。', category: 'postpartum' },
+                    { term_en: 'Shoulder Dystocia', term_zh: '肩难产', pinyin: 'jiān nán chǎn', def_en: 'A difficult delivery in which the baby\'s shoulders get stuck after the head has been born.', def_zh: '一种困难的分娩，指胎儿头部娩出后，肩部被卡住。', note_en: 'A medical emergency that requires specific maneuvers to free the baby.', note_zh: '这是一种需要特定手法来解救胎儿的医疗紧急情况。', category: 'labor' },
+                    { term_en: 'VBAC', term_zh: '剖腹产后阴道分娩', pinyin: 'pōu fù chǎn hòu yīn dào fēn miǎn', def_en: 'Vaginal Birth After Cesarean. When a woman gives birth vaginally after having had a C-section in a previous pregnancy.', def_zh: '指有过剖腹产史的女性，在随后的怀孕中选择经阴道自然分娩。', note_en: 'Short for Vaginal Birth After Cesarean.', note_zh: '是Vaginal Birth After Cesarean的缩写。', category: 'labor' }
+                ],
+                knowledge: [
+                    {
+                        id: 'prenatal',
+                        title_en: 'The Journey of Prenatal Care',
+                        title_zh: '产前保健的历程',
+                        content_en: `
+                            <p class="mb-4"><strong>Prenatal care</strong> is the comprehensive medical care and check-ups for a pregnant woman throughout her pregnancy. It aims to detect problems early and ensure the health of both mother and baby. This concept is often confused with specific <strong>prenatal check-ups</strong>, but prenatal care is a broader concept that includes nutritional guidance, health management, and childbirth education.</p>
+                            <h4 class="text-xl font-semibold mb-4 text-teal-700">A Typical Prenatal Check-up Timeline</h4>
+                            <div class="relative timeline">
+                                <div class="timeline-item"><div class="timeline-dot"></div><div class="p-4 bg-white rounded-lg border border-slate-200 shadow-sm"><strong>Weeks 6-12:</strong> Initial Visit. Confirm pregnancy, review medical history, calculate due date.</div></div>
+                                <div class="timeline-item"><div class="timeline-dot"></div><div class="p-4 bg-white rounded-lg border border-slate-200 shadow-sm"><strong>Week 13:</strong> Down Syndrome Screening. Assess risk via ultrasound and blood tests.</div></div>
+                                <div class="timeline-item"><div class="timeline-dot"></div><div class="p-4 bg-white rounded-lg border border-slate-200 shadow-sm"><strong>Weeks 20-22:</strong> Anatomy Scan. Detailed ultrasound to check baby's physical structures.</div></div>
+                                <div class="timeline-item"><div class="timeline-dot"></div><div class="p-4 bg-white rounded-lg border border-slate-200 shadow-sm"><strong>Weeks 24-28:</strong> Gestational Diabetes Screening. Oral glucose tolerance test.</div></div>
+                                <div class="timeline-item"><div class="timeline-dot"></div><div class="p-4 bg-white rounded-lg border border-slate-200 shadow-sm"><strong>Weeks 37:</strong> Group B Strep (GBS) Screening. Swab to check for bacteria that could be passed to the baby.</div></div>
+                                <div class="timeline-item"><div class="timeline-dot"></div><div class="p-4 bg-white rounded-lg border border-slate-200 shadow-sm"><strong>Weeks 38-Birth:</strong> Weekly Visits. Monitor baby's position and prepare for labor.</div></div>
+                            </div>
+                        `,
+                        content_zh: `
+                            <p class="mb-4"><strong>产前保健 (prenatal care)</strong> 是妊娠期间对孕妇的全面医疗照顾和检查，旨在及早发现问题，并守护母婴健康。这个概念通常被混同于具体的<strong>产前检查 (prenatal check-ups)</strong>，但产前保健是一个更宏观的概念，它包括营养指导、健康管理以及分娩教育。</p>
+                            <h4 class="text-xl font-semibold mb-4 text-teal-700">常规产前检查时间表</h4>
+                            <div class="relative timeline">
+                                <div class="timeline-item"><div class="timeline-dot"></div><div class="p-4 bg-white rounded-lg border border-slate-200 shadow-sm"><strong>6-12周：</strong>初次产检。确认怀孕、了解病史、计算预产期。</div></div>
+                                <div class="timeline-item"><div class="timeline-dot"></div><div class="p-4 bg-white rounded-lg border border-slate-200 shadow-sm"><strong>13周：</strong>唐氏综合症检查。通过超声波和血检评估风险。</div></div>
+                                <div class="timeline-item"><div class="timeline-dot"></div><div class="p-4 bg-white rounded-lg border border-slate-200 shadow-sm"><strong>20-22周：</strong>结构性超声波检查。详细检查胎儿的身体结构。</div></div>
+                                <div class="timeline-item"><div class="timeline-dot"></div><div class="p-4 bg-white rounded-lg border border-slate-200 shadow-sm"><strong>24-28周：</strong>妊娠期糖尿病筛查。口服葡萄糖耐量测试。</div></div>
+                                <div class="timeline-item"><div class="timeline-dot"></div><div class="p-4 bg-white rounded-lg border border-slate-200 shadow-sm"><strong>37周：</strong>乙型链球菌筛查。检查是否存在可能传染给新生儿的细菌。</div></div>
+                                <div class="timeline-item"><div class="timeline-dot"></div><div class="p-4 bg-white rounded-lg border border-slate-200 shadow-sm"><strong>38周至分娩：</strong>每周产检。监测胎位，为分娩做准备。</div></div>
+                            </div>
+                        `
+                    },
+                    {
+                        id: 'labor',
+                        title_en: 'The Stages of Labor',
+                        title_zh: '分娩的阶段',
+                        content_en: `
+                            <p class="mb-4">Understanding the stages of labor is crucial for expectant parents. It helps them know what is happening to their body and better cope with the process. Labor is generally divided into three or four stages.</p>
+                            <div class="space-y-3">
+                                <div class="p-4 bg-white rounded-lg border border-slate-200 shadow-sm"><strong class="text-teal-700">1. First Stage (Cervical Dilation):</strong> Begins with regular contractions and ends when the cervix is fully dilated to 10 cm. This is the longest stage.</div>
+                                <div class="p-4 bg-white rounded-lg border border-slate-200 shadow-sm"><strong class="text-teal-700">2. Second Stage (Pushing & Birth):</strong> Starts with full dilation and ends with the birth of the baby. This is when you'll actively push.</div>
+                                <div class="p-4 bg-white rounded-lg border border-slate-200 shadow-sm"><strong class="text-teal-700">3. Third Stage (Placenta Delivery):</strong> Begins after the baby is born and ends when the placenta (afterbirth) is delivered.</div>
+                                <div class="p-4 bg-white rounded-lg border border-slate-200 shadow-sm"><strong class="text-teal-700">4. Fourth Stage (Postpartum Recovery):</strong> The first few hours after delivery, where the mother is closely monitored as her body begins to recover.</div>
+                            </div>
+                        `,
+                        content_zh: `
+                            <p class="mb-4">了解分娩的阶段对于准父母来说至关重要。它有助于他们了解身体正在发生什么，并更好地应对分娩过程。分娩通常分为三个或四个阶段。</p>
+                            <div class="space-y-3">
+                                <div class="p-4 bg-white rounded-lg border border-slate-200 shadow-sm"><strong class="text-teal-700">第一阶段 (宫颈扩张)：</strong>从规则的宫缩开始，到宫颈完全扩张至10厘米结束。这是最长的一个阶段。</div>
+                                <div class="p-4 bg-white rounded-lg border border-slate-200 shadow-sm"><strong class="text-teal-700">第二阶段 (胎儿娩出)：</strong>从宫颈完全扩张开始，到婴儿完全出生结束。这是您需要用力“推”的阶段。</div>
+                                <div class="p-4 bg-white rounded-lg border border-slate-200 shadow-sm"><strong class="text-teal-700">第三阶段 (胎盘娩出)：</strong>从婴儿出生开始，到胎盘完全排出体外结束。</div>
+                                <div class="p-4 bg-white rounded-lg border border-slate-200 shadow-sm"><strong class="text-teal-700">第四阶段 (产后恢复)：</strong>分娩后的头几个小时，在此期间产妇会受到密切监测，身体开始恢复。</div>
+                            </div>
+                        `
+                    }
+                ],
+                qna: [
+                    {
+                        id: 'qa1',
+                        q_en: 'What is a typical healthy weight gain during pregnancy?',
+                        q_zh: '孕期体重增加多少算正常？',
+                        a_en: 'For women with a healthy BMI before pregnancy, a weight gain of 25 to 35 pounds (11.5 to 16 kg) is generally recommended. This can vary based on individual health and if you are carrying multiples.',
+                        a_zh: '对于孕前BMI健康的女性，通常建议体重增加25到35磅（11.5到16公斤）。这会根据个人健康状况和是否怀有多胞胎而有所不同。'
+                    },
+                    {
+                        id: 'qa2',
+                        q_en: 'Is it safe to exercise during pregnancy?',
+                        q_zh: '孕期可以运动吗？',
+                        a_en: 'Yes, in most cases, moderate exercise is not only safe but also recommended. Activities like walking, swimming, and prenatal yoga are excellent. However, always consult with your healthcare provider before starting any new exercise routine.',
+                        a_zh: '在大多数情况下，适度运动不仅安全，而且受到推荐。散步、游泳和孕期瑜伽都是很好的选择。但在开始任何新的运动计划前，务必咨询您的医生。'
+                    },
+                    {
+                        id: 'qa3',
+                        q_en: 'What are the early signs of labor?',
+                        q_zh: '分娩的早期迹象有哪些？',
+                        a_en: 'Early signs can include regular, increasingly strong contractions; a gush or trickle of fluid (your water breaking); and a bloody show (loss of the mucus plug). If you experience these, contact your healthcare provider.',
+                        a_zh: '早期迹象包括有规律且越来越强的宫缩；突然流出或持续渗出的液体（破水）；以及见红（排出宫颈粘液栓）。如果出现这些情况，请联系您的医生。'
+                    },
+                    {
+                        id: 'qa4',
+                        q_en: 'What is the "fourth trimester"?',
+                        q_zh: '什么是“第四个孕期”？',
+                        a_en: 'The "fourth trimester" is the period immediately following birth, typically the first three months. It is a time of major physical and emotional adjustment for both the mother and the newborn, often requiring significant rest and support.',
+                        a_zh: '“第四个孕期”指的是婴儿出生后的时期，通常是最初的三个月。这是母亲和新生儿进行重大身体和情感调整的时期，通常需要大量的休息和支持。'
+                    },
+                    {
+                        id: 'qa5',
+                        q_en: 'How often should a pregnant woman have prenatal check-ups?',
+                        q_zh: '孕妇应该多久进行一次产前检查？',
+                        a_en: 'Typically, check-ups are monthly until week 28, then every two weeks until week 36, and finally weekly until delivery. This schedule can be adjusted based on the individual\'s health and pregnancy risks.',
+                        a_zh: '通常在怀孕28周前每月一次；之后每两周一次直到36周；最后每周一次直到分娩。这个时间表会根据个人的健康和妊娠风险进行调整。'
+                    }
+                ]
+            };
+
+            const langSwitcher = document.getElementById('lang-switcher');
+            const langSwitcherKnob = document.getElementById('lang-switcher-knob');
+            const searchBar = document.getElementById('search-bar');
+            const categoryFiltersContainer = document.getElementById('category-filters');
+            const glossaryGrid = document.getElementById('glossary-grid');
+            const noResults = document.getElementById('no-results');
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+            const knowledgeContainer = document.getElementById('knowledge-container');
+            const qnaContainer = document.getElementById('qna-container');
+
+            const switchLanguage = () => {
+                appState.lang = appState.lang === 'zh' ? 'en' : 'zh';
+                
+                langSwitcherKnob.style.transform = appState.lang === 'zh' ? 'translateX(1.25rem)' : 'translateX(0)';
+                langSwitcher.style.backgroundColor = appState.lang === 'zh' ? '#0d9488' : '#475569';
+
+                document.documentElement.lang = appState.lang;
+                renderAll();
+            };
+
+            const renderAll = () => {
+                updateLanguage();
+                renderGlossary();
+                renderCategories();
+                renderKnowledge();
+                renderQNA();
+            };
+
+            const updateLanguage = () => {
+                const elementsToShow = document.querySelectorAll(`.lang-${appState.lang}`);
+                const elementsToHide = document.querySelectorAll(`.lang-${appState.lang === 'zh' ? 'en' : 'zh'}`);
+                
+                elementsToShow.forEach(el => {
+                    el.classList.remove('hidden-lang');
+                    el.style.opacity = '1';
+                });
+                elementsToHide.forEach(el => {
+                    el.classList.add('hidden-lang');
+                    el.style.opacity = '0';
+                });
+
+                searchBar.placeholder = appState.lang === 'zh' ? '搜索术语 (Search terms)...' : 'Search terms (搜索术语)...';
+            };
+
+            const renderCategories = () => {
+                categoryFiltersContainer.innerHTML = '';
+                Object.keys(data.categories).forEach(key => {
+                    const category = data.categories[key];
+                    const button = document.createElement('button');
+                    button.dataset.category = key;
+                    button.className = `category-button py-1 px-3 border-2 rounded-full text-sm font-medium ${appState.filterCategory === key ? 'active' : 'border-slate-300'}`;
+                    
+                    const spanZh = document.createElement('span');
+                    spanZh.className = 'lang-zh';
+                    spanZh.textContent = category.zh;
+                    
+                    const spanEn = document.createElement('span');
+                    spanEn.className = 'lang-en';
+                    spanEn.textContent = category.en;
+
+                    button.appendChild(spanZh);
+                    button.appendChild(spanEn);
+                    
+                    categoryFiltersContainer.appendChild(button);
+                });
+                updateLanguage();
+            };
+
+            const renderGlossary = () => {
+                glossaryGrid.innerHTML = '';
+                const searchTerm = appState.searchTerm.toLowerCase();
+
+                const filteredData = data.glossary.filter(item => {
+                    const inCategory = appState.filterCategory === 'all' || item.category === appState.filterCategory;
+                    const inSearch = searchTerm === '' ||
+                        item.term_en.toLowerCase().includes(searchTerm) ||
+                        item.term_zh.toLowerCase().includes(searchTerm) ||
+                        item.pinyin.toLowerCase().includes(searchTerm);
+                    return inCategory && inSearch;
+                });
+
+                if (filteredData.length === 0) {
+                    noResults.classList.remove('hidden');
+                } else {
+                    noResults.classList.add('hidden');
+                }
+
+                filteredData.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = 'glossary-card rounded-lg p-6 shadow-sm flex flex-col';
+                    card.innerHTML = `
+                        <div class="flex-grow">
+                            <h3 class="text-xl font-bold mb-2">
+                                <span class="lang-zh">${item.term_zh}</span>
+                                <span class="lang-en hidden-lang">${item.term_en}</span>
+                            </h3>
+                            <p class="text-sm text-slate-400 mb-3">
+                                <span class="lang-zh">${item.pinyin}</span>
+                                <span class="lang-en hidden-lang">${item.term_zh}</span>
+                            </p>
+                            <p class="text-slate-600 mb-4">
+                                <span class="lang-zh">${item.def_zh}</span>
+                                <span class="lang-en hidden-lang">${item.def_en}</span>
+                            </p>
+                        </div>
+                        <div class="mt-auto pt-4 border-t border-slate-200">
+                            <p class="text-sm text-slate-500 italic">
+                                <strong class="lang-zh">语境/备注：</strong>
+                                <strong class="lang-en hidden-lang">Context/Note:</strong>
+                                <span class="lang-zh">${item.note_zh}</span>
+                                <span class="lang-en hidden-lang">${item.note_en}</span>
+                            </p>
+                        </div>
+                    `;
+                    glossaryGrid.appendChild(card);
+                });
+                updateLanguage();
+            };
+
+            const renderKnowledge = () => {
+                knowledgeContainer.innerHTML = '';
+                data.knowledge.forEach(concept => {
+                    const conceptWrapper = document.createElement('div');
+                    conceptWrapper.className = 'bg-white rounded-lg shadow-sm overflow-hidden border border-slate-200';
+                    conceptWrapper.innerHTML = `
+                        <button class="accordion-button w-full text-left p-4 flex justify-between items-center font-semibold text-lg hover:bg-slate-50">
+                            <span>
+                                <span class="lang-zh">${concept.title_zh}</span>
+                                <span class="lang-en hidden-lang">${concept.title_en}</span>
+                            </span>
+                            <svg class="accordion-arrow w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="p-4 border-t border-slate-200 text-slate-700 leading-relaxed">
+                                <div class="lang-zh">${concept.content_zh}</div>
+                                <div class="lang-en hidden-lang">${concept.content_en}</div>
+                            </div>
+                        </div>
+                    `;
+                    knowledgeContainer.appendChild(conceptWrapper);
+                });
+                updateLanguage();
+            };
+
+            const renderQNA = () => {
+                qnaContainer.innerHTML = '';
+                data.qna.forEach(item => {
+                    const qnaWrapper = document.createElement('div');
+                    qnaWrapper.className = 'bg-white rounded-lg shadow-sm overflow-hidden border border-slate-200';
+                    qnaWrapper.innerHTML = `
+                        <button class="accordion-button w-full text-left p-4 flex justify-between items-center font-semibold text-lg hover:bg-slate-50">
+                            <span>
+                                <span class="lang-zh">${item.q_zh}</span>
+                                <span class="lang-en hidden-lang">${item.q_en}</span>
+                            </span>
+                            <svg class="accordion-arrow w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="p-4 border-t border-slate-200 text-slate-700 leading-relaxed">
+                                <p>
+                                    <span class="lang-zh">${item.a_zh}</span>
+                                    <span class="lang-en hidden-lang">${item.a_en}</span>
+                                </p>
+                            </div>
+                        </div>
+                    `;
+                    qnaContainer.appendChild(qnaWrapper);
+                });
+                updateLanguage();
+            };
+
+            searchBar.addEventListener('input', (e) => {
+                appState.searchTerm = e.target.value;
+                renderGlossary();
+            });
+
+            categoryFiltersContainer.addEventListener('click', (e) => {
+                const button = e.target.closest('.category-button');
+                if (button) {
+                    appState.filterCategory = button.dataset.category;
+                    renderCategories();
+                    renderGlossary();
+                }
+            });
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    appState.activeTab = button.dataset.tab;
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    tabContents.forEach(content => {
+                        if (content.id === `${appState.activeTab}-section`) {
+                            content.classList.remove('hidden');
+                        } else {
+                            content.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+
+            document.addEventListener('click', e => {
+                const button = e.target.closest('.accordion-button');
+                if (button) {
+                    const content = button.nextElementSibling;
+                    const arrow = button.querySelector('.accordion-arrow');
+                    const isOpen = content.style.maxHeight && content.style.maxHeight !== '0px';
+
+                    if (button.closest('#qna-container') || button.closest('#knowledge-container')) {
+                        const parent = button.closest('section');
+                        parent.querySelectorAll('.accordion-content').forEach(c => c.style.maxHeight = '0px');
+                        parent.querySelectorAll('.accordion-arrow').forEach(a => a.classList.remove('rotate-180'));
+                    }
+
+                    if (!isOpen) {
+                        content.style.maxHeight = content.scrollHeight + 'px';
+                        arrow.classList.add('rotate-180');
+                    }
+                }
+            });
+
+            langSwitcher.addEventListener('click', switchLanguage);
+
+            renderAll();
+        });
+    </script>
+</body>
+</html>
